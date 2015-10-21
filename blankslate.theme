@@ -1,0 +1,5 @@
+<?php
+
+function blankslate_preprocess_page(&$variables) {
+
+}
