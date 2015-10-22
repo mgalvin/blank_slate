@@ -62,12 +62,13 @@ gulp.task('build', function(callback) {
 });
 
 gulp.task('browser-sync', function() {
-    browserSync.init(["css/*.css", "js/*.js"], {
-      // If running on host (not in guest VM), enable proxy mode.
-      // options: {
-      //   proxy: "devstack.local"
-      // }
-    });
+  browserSync.init(["css/*.css", "js/*.js"], {
+    // If running on host (not in guest VM), enable proxy mode.
+    proxy: "devstack.local",
+    reloadDelay: 300, // default is 2000 (2 seconds)
+    injectChanges: true, // Inject CSS changes
+    // injectChanges: false, // Don't try to inject, just do a page refresh
+  });
 });
 
 // Rerun the task when a file changes
