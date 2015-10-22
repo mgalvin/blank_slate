@@ -27,5 +27,5 @@
     "postinstall": "find node_modules/ -name \"*.info\" -type f -delete"
   },
   "author": "Matt Galvin",
-  "license": "Private"
+  "license": "MIT"
 }
