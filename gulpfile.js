@@ -12,6 +12,7 @@ var cssmin = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var runSequence = require('run-sequence');
+var browserSync = require('browser-sync').create();
 
 // paths
 var imgSrc = './images/src/*';
@@ -60,6 +61,15 @@ gulp.task('build', function(callback) {
   runSequence('sass', 'imagemin', 'svgmin', 'cssmin', callback);
 });
 
+gulp.task('browser-sync', function() {
+    browserSync.init(["css/*.css", "js/*.js"], {
+      // If running on host (not in guest VM), enable proxy mode.
+      // options: {
+      //   proxy: "devstack.local"
+      // }
+    });
+});
+
 // Rerun the task when a file changes
 gulp.task('watch', function() {
   gulp.watch(sassSrc, ['sass', 'cssmin']);
@@ -68,5 +78,5 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', function(callback) {
-  runSequence('sass', 'imagemin', 'svgmin', 'cssmin', 'watch', callback);
+  runSequence('sass', 'imagemin', 'svgmin', 'cssmin', 'browser-sync', 'watch', callback);
 });
