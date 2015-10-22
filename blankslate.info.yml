@@ -5,8 +5,8 @@ type: theme
 core: 8.x
 # Add libraries.
 libraries:
-  - atlas/global-css
-  - atlas/global-js
+  - blankslate/global-css
+  - blankslate/global-js
 # Remove stylesheets.
 stylesheets-remove:
   # - core/assets/vendor/normalize-css/normalize.css
