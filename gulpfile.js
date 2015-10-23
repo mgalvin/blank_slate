@@ -9,8 +9,8 @@ var rename = require('gulp-rename');
 var svgmin = require('gulp-svgmin');
 var sass = require('gulp-sass');
 var cssmin = require('gulp-minify-css');
-var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
+var jshint = require('gulp-jshint');
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync').create();
 
@@ -24,12 +24,10 @@ var sassDest = './css';
 
 gulp.task('sass', function () {
 gulp.src(sassSrc)
-  .pipe(sourcemaps.init())
   .pipe(sass({
     errLogToConsole: true
     }))
   .pipe(autoprefixer('last 2 version'))
-  .pipe(sourcemaps.write())
   .pipe(gulp.dest(sassDest));
 });
 
@@ -64,7 +62,7 @@ gulp.task('build', function(callback) {
 gulp.task('browser-sync', function() {
   browserSync.init(["css/*.css", "js/*.js"], {
     // If running on host (not in guest VM), enable proxy mode.
-    proxy: "devstack.local",
+    proxy: "devstack.vm",
     reloadDelay: 300, // default is 2000 (2 seconds)
     injectChanges: true, // Inject CSS changes
     // injectChanges: false, // Don't try to inject, just do a page refresh
@@ -73,11 +71,15 @@ gulp.task('browser-sync', function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(sassSrc, ['sass', 'cssmin']);
   gulp.watch(imgSrc, ['imagemin']);
   gulp.watch(svgSrc, ['svgmin']);
+  gulp.watch(sassSrc, ['sass', 'cssmin']);
+});
+
+gulp.task('serve', function(callback) {
+  runSequence('build', 'browser-sync', 'watch', callback);
 });
 
 gulp.task('default', function(callback) {
-  runSequence('sass', 'imagemin', 'svgmin', 'cssmin', 'browser-sync', 'watch', callback);
+  runSequence('build', 'watch', callback);
 });
